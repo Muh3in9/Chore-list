@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Chore Checker</title>
+  <style>
+    /* made this kinda simple but cute */
+    body {
+      font-family: "Poppins", sans-serif;
+      background: #fafaff;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    header {
+      padding: 20px;
+      text-align: center;
+    }
+
+    .wave {
+      font-size: 40px;
+      display: inline-block;
+      animation: wiggle 1.3s infinite;
+    }
+
+    @keyframes wiggle {
+      0% { transform: rotate(0deg); }
+      50% { transform: rotate(15deg); }
+      100% { transform: rotate(0); }
+    }
+
+    .box {
+      background: #fff;
+      padding: 20px;
+      border-radius: 18px;
+      box-shadow: 0 4px 9px rgba(0,0,0,0.08);
+      width: 90%;
+      max-width: 480px;
+      text-align: center;
+      margin-top: 10px;
+      animation: floaty 3s infinite ease-in-out;
+    }
+
+    @keyframes floaty {
+      0% { transform: translateY(0); }
+      50% { transform: translateY(-6px); }
+      100% { transform: translateY(0); }
+    }
+
+    .chore-display {
+      margin-top: 15px;
+      padding: 12px;
+      background: #eef0ff;
+      border-radius: 12px;
+      font-weight: 600;
+      display: grid;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .row {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.95rem;
+    }
+
+    .date {
+      margin-top: 10px;
+      font-size: 0.9rem;
+      color: #666;
+    }
+
+    footer {
+      margin-top: 25px;
+      padding-bottom: 20px;
+      font-size: 0.9em;
+      color: #555;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h2>Hey there! <span class="wave">👋</span></h2>
+    <p>Just a small project I made (bc why not lol) to help me & Maher track chores.</p>
+  </header>
+
+  <div class="box">
+    <h3>Today's Chores</h3>
+    <div class="chore-display" id="out">
+      <div class="row" id="person1">Loading...</div>
+      <div class="row" id="person2">Loading...</div>
+      <div class="date" id="date">—</div>
+    </div>
+  </div>
+
+  <footer>
+    Built by Muhsina — powered by snacks, anime breaks & random coding energy.
+  </footer>
+
+  <script>
+    // human-style simple script so it looks handwritten
+    const person1 = "Muhsina"; // first person (always shown first)
+    const person2 = "Maher";   // second person
+
+    // chores order matters: 0 -> sweeping, 1 -> washing
+    const chores = [
+      "Sweeping the house & arranging the place",
+      "Washing the plates"
+    ];
+
+    // each day we pick an index based on the number of days since epoch
+    function getDayIndex(date) {
+      return Math.floor(date.getTime() / (1000 * 60 * 60 * 24));
+    }
+
+    function formatNiceDate(d) {
+      const opts = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+      return d.toLocaleDateString(undefined, opts);
+    }
+
+    function render() {
+      const today = new Date();
+      const idx = getDayIndex(today) % chores.length; // 0 or 1
+
+      // person1 always gets chores[idx], person2 gets the other one
+      const chore1 = chores[idx];
+      const chore2 = chores[(idx + 1) % chores.length];
+
+      // show both duties clearly and in a human-written sentence style
+      document.getElementById('person1').innerText = `${person1} is doing: ${chore1}`;
+      document.getElementById('person2').innerText = `${person2} is doing: ${chore2}`;
+
+      // show the actual date so it's clear it's based on the date
+      document.getElementById('date').innerText = `Date: ${formatNiceDate(today)}`;
+    }
+
+    // run it now
+    render();
+  </script>
+
+</body>
+</html>
